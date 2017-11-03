@@ -27,7 +27,7 @@ app.get('/new', (request, response) => {
 app.get('/articles', (request, response) => {
   // REVIEW: This query will join the data together from our tables and send it back to the client.
   // DONE: Write a SQL query which joins all data from articles and authors tables on the author_id value of each.
-  client.query(`SELECT * FROM articles INNER JOIN authors ON article.id=authors.author_id`)
+  client.query(`SELECT * FROM articles INNER JOIN authors ON authors.author_id=articles.author_id`)
     .then(result => {
       response.send(result.rows);
     })
@@ -42,7 +42,7 @@ app.post('/articles', (request, response) => {
   client.query(
     `INSERT INTO
     author(author_id, author, "authorUrl")
-    VALUES($1, $2, $3)`,
+    VALUES($1, $2, $3) ON CONFLICT DO NOTHING`,
     [
       request.body.author,
       request.body.authorUrl
@@ -94,18 +94,30 @@ app.post('/articles', (request, response) => {
 });
 
 app.put('/articles/:id', function(request, response) {
-  // TODO: Write a SQL query to update an author record. Remember that our articles now have an author_id property, so we can reference it from the request.body.
-  // TODO: In the provided array, add the required values from the request as data for the SQL query to interpolate.
+  // DONE: Write a SQL query to update an author record. Remember that our articles now have an author_id property, so we can reference it from the request.body.
+  // DONE: In the provided array, add the required values from the request as data for the SQL query to interpolate.
   client.query(
-    ``,
-    []
+    `UPDATE authors
+    SET
+    author=$2,
+    "authorUrl"=$3
+    WHERE author_id=$1`,
+    [request.body.author,
+      request.body.authorUrl,
+      request.params.id]
   )
     .then(() => {
-    // TODO: Write a SQL query to update an article record. Keep in mind that article records now have an author_id, in addition to title, category, publishedOn, and body.
-    // TODO: In the provided array, add the required values from the request as data for the SQL query to interpolate.
+    // DONE: Write a SQL query to update an article record. Keep in mind that article records now have an author_id, in addition to title, category, publishedOn, and body.
+    // DONE: In the provided array, add the required values from the request as data for the SQL query to interpolate.
       client.query(
-        ``,
-        []
+        `UPDATE articles
+        SET title=$1, category=$2, "publishedOn"=$3, body=$4 WHERE author_id=$5`,
+        [request.body.title,
+          request.body.category,
+          request.body.publishedOn,
+          request.body.body,
+          request.body.author_id
+        ]
       )
     })
     .then(() => {
