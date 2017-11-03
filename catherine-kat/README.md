@@ -1,12 +1,12 @@
-08-sql-intro-and-postgres - Code 301, Day 9
+09-sql-joins-relations - Code 301, Day 9
 
-Author: Catherine Looper
+Author: Catherine Looper and Kat Cosgrove
 
-Version: 1.8.0
+Version: 1.9.0
 
 Overview
 
-This app is hosted on a local server.
+This app is hosted on a local server. The articles are being stored and handled by two tables in a postgres database.
 
 Using AJAX, we now retrieve our data from a remote source, rather than loading it in through a JS script. Further, in order to make the page load faster, we store this data after the initial retrieval into localStorage, thus avoiding additional server queries.
 
@@ -37,7 +37,11 @@ We approached this design with a mobile first mindset. Then we used media querie
 Change Log
 ====
 
-11/2/17 9:00AM My partner was two hours late today, so I started working on my own, and collaborated with Joe and Andrew.
+11/3/17 9:00AM We started off with Catherine driving and Kat navigating, we set up the file tree, and completed the first few TODOs.
+
+11/3/17 10:00AM We switched to Kat as driver and Catherine as navigator. We finished the TODOs and tested the functionality. We had errors so we fixed the join function.
+
+11/3/17 11:00AM We switched to Catherine as driver and Kat as navigator and completed the README.
 
 
 Credits and Collaborations
