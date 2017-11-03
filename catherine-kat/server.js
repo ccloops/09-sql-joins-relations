@@ -77,14 +77,14 @@ app.post('/articles', (request, response) => {
     // DONE: In the provided array, add the data from our new article, including the author_id, as data for the SQL query.
     client.query(
       `INSERT INTO
-      articles(title, category, "publishedOn", body, author_id)
+      articles(author_id, title, category, "publishedOn", body)
       VALUES($1, $2, $3, $4, $5)`,
       [
+        author_id,
         request.body.title,
         request.body.category,
         request.body.publishedOn,
-        request.body.body,
-        author_id
+        request.body.body
       ],
       function(err) {
         if (err) console.error(err);
@@ -100,24 +100,28 @@ app.put('/articles/:id', function(request, response) {
   client.query(
     `UPDATE authors
     SET
-    author=$2,
-    "authorUrl"=$3
-    WHERE author_id=$1`,
-    [request.body.author,
+    author=$1,
+    "authorUrl"=$2
+    WHERE author_id=$3`,
+    [
+      request.body.author,
       request.body.authorUrl,
-      request.params.id]
+      request.body.author_id
+    ]
   )
     .then(() => {
     // DONE: Write a SQL query to update an article record. Keep in mind that article records now have an author_id, in addition to title, category, publishedOn, and body.
     // DONE: In the provided array, add the required values from the request as data for the SQL query to interpolate.
       client.query(
         `UPDATE articles
-        SET title=$1, category=$2, "publishedOn"=$3, body=$4 WHERE author_id=$5`,
-        [request.body.title,
+        SET title=$1, category=$2, "publishedOn"=$3, body=$4, author_id=$5 WHERE article_id=$6`,
+        [
+          request.body.title,
           request.body.category,
           request.body.publishedOn,
           request.body.body,
-          request.body.author_id
+          request.body.author_id,
+          request.params.id
         ]
       )
     })
