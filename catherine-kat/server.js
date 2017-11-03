@@ -37,12 +37,13 @@ app.get('/articles', (request, response) => {
 });
 
 app.post('/articles', (request, response) => {
+  console.log('******')
   // DONE: Write a SQL query to insert a new author, ON CONFLICT DO NOTHING.
   // DONE: In the provided array, add the author and "authorUrl" as data for the SQL query.
   client.query(
     `INSERT INTO
-    author(author_id, author, "authorUrl")
-    VALUES($1, $2, $3) ON CONFLICT DO NOTHING`,
+    authors(author, "authorUrl")
+    VALUES($1, $2) ON CONFLICT DO NOTHING`,
     [
       request.body.author,
       request.body.authorUrl
@@ -58,7 +59,7 @@ app.post('/articles', (request, response) => {
     // DONE: Write a SQL query to retrieve the author_id from the authors table for the new article.
     // DONE: In the provided array, add the author name as data for the SQL query.
     client.query(
-      `SELECT author_id FROM authors`,
+      `SELECT author_id FROM authors WHERE author=$1`,
       [
         request.body.author
       ],
@@ -83,7 +84,7 @@ app.post('/articles', (request, response) => {
         request.body.category,
         request.body.publishedOn,
         request.body.body,
-        request.body.author_id
+        author_id
       ],
       function(err) {
         if (err) console.error(err);

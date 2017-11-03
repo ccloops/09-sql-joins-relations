@@ -26,11 +26,11 @@ Article.loadAll = rawData => {
 
 Article.fetchAll = callback => {
   $.get('/articles')
-    .then(results => {
-      Article.loadAll(results);
-      callback();
-    }
-  )
+  .then(results => {
+    Article.loadAll(results);
+    callback();
+  }
+)
 };
 
 Article.truncateTable = callback => {
